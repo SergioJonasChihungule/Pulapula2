@@ -103,6 +103,7 @@ class Bird(val world: World) {
         isGettingReady = true
     }
     fun gameOver(){
+        if (score > MainGame.settings.scores) MainGame.settings.scores = score
         isGameOver = true;
         isPlaying = false;
     }

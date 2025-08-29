@@ -14,6 +14,8 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import seran.pulapula.game.utils.Settings;
 import seran.pulapula.game.utils.Utils;
 
 
@@ -25,7 +27,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor {
 
     float width, height,  text_w,  text_h;
    public static float foreg_h;
-   private BitmapFont font;
+   private BitmapFont font, font2;
    private GlyphLayout layout;
 
 
@@ -33,11 +35,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor {
 
     private Bird bird;
     private World world;
+     public static Settings settings;
     @Override
     public void create() {
         width = Gdx.graphics.getWidth();
         height = Gdx.graphics.getHeight();
-       
+        settings = new Settings( Gdx.app.getPreferences("My Preferences"));
         
         batch = new SpriteBatch();
         AssetsManager.load();
@@ -51,6 +54,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor {
 
 
         font = generator.generateFont(parameter);
+        parameter.size = (int)(height*0.03f);
+        parameter.shadowOffsetX = (int) (parameter.size*0.05f);
+        parameter.shadowOffsetY = (int) (parameter.size*0.05f);
+        font2 = generator.generateFont(parameter);
+
+
          generator.dispose();
         layout = new GlyphLayout(font, "");
 
@@ -87,6 +96,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor {
             text_w = layout.width;
             font.draw(batch, ""+bird.getScore(), width/2-text_w/2, height-height*0.1f);
         }
+        font2.draw(batch, "Rercord: "+settings.getScores(), width*0.03f,height- width*0.03f);
         if (bird.isGameOver()){
             layout.setText(font, gameOver);
             text_w = layout.width;
@@ -101,9 +111,9 @@ public class MainGame extends ApplicationAdapter implements InputProcessor {
             world.update(delta);
         }
         
-        
 
         bird.update(delta);
+
 
 
     }
